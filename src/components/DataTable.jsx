@@ -99,8 +99,8 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack, c
     try {
       const flags = runRules(coerced)
       const context = { weather, timeOfDay, busyness, occasion: occasion.trim() || null }
-      const recommendations = await getRecommendations(coerced, flags, context)
-      onAnalysisComplete({ rows: coerced, flags, recommendations, context })
+      const { recs: recommendations, source: recsSource } = await getRecommendations(coerced, flags, context)
+      onAnalysisComplete({ rows: coerced, flags, recommendations, recsSource, context })
     } catch (err) {
       setError(err.message)
     } finally {

@@ -148,7 +148,7 @@ function RecommendationCard({ rec }) {
 }
 
 export default function ResultsDashboard({ results, onBack, onReset }) {
-  const { rows, flags, recommendations } = results
+  const { rows, flags, recommendations, recsSource } = results
 
   const weeklyRevenue = rows.reduce((s, r) => s + r.price * r.sold, 0)
   const weeklyProfit  = rows.reduce((s, r) => s + (r.price - r.cost) * r.sold, 0)
@@ -274,8 +274,8 @@ export default function ResultsDashboard({ results, onBack, onReset }) {
         {/* AI recommendations */}
         <section className="recs-section">
           <h3 className="section-title">
-            AI recommendations
-            <span className="section-title-badge">AI</span>
+            {recsSource === 'rules' ? 'Rule-based recommendations' : 'AI recommendations'}
+            <span className="section-title-badge">{recsSource === 'rules' ? 'Rules' : 'AI'}</span>
           </h3>
           {recommendations?.length ? (
             <motion.div className="recs-grid" variants={staggerSlow} initial="initial" animate="animate">

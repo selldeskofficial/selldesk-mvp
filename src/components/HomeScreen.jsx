@@ -2,6 +2,56 @@ import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { parseCSV } from '../utils/csvParser'
 
+function MagneticButton({ children, className, onClick, disabled }) {
+  const btnRef = useRef(null)
+
+  function onMove(e) {
+    if (disabled) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const btn = btnRef.current
+    const r = btn.getBoundingClientRect()
+    const dx = e.clientX - (r.left + r.width / 2)
+    const dy = e.clientY - (r.top  + r.height / 2)
+    btn.style.transform  = `translate(${dx * 0.22}px, ${dy * 0.22}px)`
+    btn.style.transition = 'transform 0.1s ease'
+  }
+
+  function onLeave() {
+    const btn = btnRef.current
+    btn.style.transform  = ''
+    btn.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1), background 0.2s ease, box-shadow 0.2s ease'
+  }
+
+  return (
+    <div className="magnetic-wrap" onMouseMove={onMove} onMouseLeave={onLeave}>
+      <button ref={btnRef} className={className} onClick={onClick} disabled={disabled}>
+        {children}
+      </button>
+    </div>
+  )
+}
+
+function onCardTilt(e) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (window.matchMedia('(hover: none)').matches) return
+  const el = e.currentTarget
+  const r  = el.getBoundingClientRect()
+  const x  = (e.clientX - r.left) / r.width  - 0.5
+  const y  = (e.clientY - r.top)  / r.height - 0.5
+  el.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`
+  el.style.transition = 'transform 0.1s ease'
+  el.style.setProperty('--glow-x', `${(x + 0.5) * 100}%`)
+  el.style.setProperty('--glow-y', `${(y + 0.5) * 100}%`)
+}
+
+function onCardTiltEnd(e) {
+  const el = e.currentTarget
+  el.style.transform  = ''
+  el.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.2s'
+  el.style.removeProperty('--glow-x')
+  el.style.removeProperty('--glow-y')
+}
+
 const SAMPLE_ROWS = [
   { id: crypto.randomUUID(), item: 'Cappuccino',  sold: 42, price: 120, cost: 45  },
   { id: crypto.randomUUID(), item: 'Cold Brew',   sold: 8,  price: 150, cost: 70  },
@@ -109,27 +159,33 @@ export default function HomeScreen({ onDataReady }) {
           ✦ Built for Indian café owners
         </motion.div>
         <motion.h1 className="landing-title" variants={fadeUp} transition={{ duration: 0.45 }}>
-          Your café is busy.<br />
-          But is it <em>profitable?</em>
+          Find your slow movers.<br />
+          Fix your <em>menu.</em>
         </motion.h1>
         <motion.p className="landing-subtitle" variants={fadeUp} transition={{ duration: 0.45 }}>
-          Most café owners work 12-hour days and still can't explain why margins are thin.
-          Selldesk turns your sales data into clear, actionable revenue decisions — in under 3 minutes.
+          Turn your sales data into 3 specific actions — pricing, combos, cuts.
+          In under 3 minutes. No account needed.
         </motion.p>
         <motion.div className="landing-hero-cta" variants={fadeUp} transition={{ duration: 0.4 }}>
-          <button className="btn btn--primary btn--lg" onClick={handleManual}>
+          <MagneticButton className="btn btn--primary btn--lg" onClick={handleManual}>
             Try with sample data →
-          </button>
-          <button className="btn btn--ghost btn--lg" onClick={() => !parsing && fileRef.current?.click()} disabled={parsing}>
-            {parsing ? <><span className="spinner spinner--dark" /> Reading CSV…</> : 'Upload my CSV'}
-          </button>
+          </MagneticButton>
           <input ref={fileRef} type="file" accept=".csv,text/csv"
             style={{ display: 'none' }} onChange={handleFileChange} />
         </motion.div>
         <motion.p className="landing-hero-note" variants={fadeUp} transition={{ duration: 0.4 }}>
           {parseError
             ? <span style={{ color: 'var(--danger)' }}>{parseError}</span>
-            : 'No account needed. Upload any CSV — AI maps the columns.'}
+            : <>
+                <span
+                  className="landing-upload-link"
+                  onClick={() => !parsing && fileRef.current?.click()}
+                >
+                  {parsing ? 'Reading CSV…' : 'or upload your own CSV'}
+                </span>
+                {' — AI maps the columns automatically'}
+              </>
+          }
         </motion.p>
       </motion.section>
 
@@ -160,7 +216,8 @@ export default function HomeScreen({ onDataReady }) {
               key={i}
               variants={fadeUp}
               transition={{ duration: 0.4 }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              onMouseMove={onCardTilt}
+              onMouseLeave={onCardTiltEnd}
             >
               <div className="pain-stat">{p.stat}</div>
               <div className="pain-headline">{p.headline}</div>
@@ -194,13 +251,63 @@ export default function HomeScreen({ onDataReady }) {
               key={i}
               variants={fadeUp}
               transition={{ duration: 0.4 }}
-              whileHover={{ y: -3, transition: { duration: 0.2 } }}
+              onMouseMove={onCardTilt}
+              onMouseLeave={onCardTiltEnd}
             >
               <div className="step-number">{s.n}</div>
               <div className="step-title">{s.title}</div>
               <p className="step-body">{s.body}</p>
             </motion.div>
           ))}
+        </motion.div>
+      </motion.section>
+
+      <div className="landing-divider" />
+
+      {/* ── Product proof ──────────────────────────────── */}
+      <motion.section
+        className="landing-section"
+        variants={stagger}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, amount: 0.15 }}
+      >
+        <motion.div className="landing-section-label" variants={fadeUp} transition={{ duration: 0.4 }}>
+          How the insight reaches you
+        </motion.div>
+        <motion.h2 className="landing-section-title" variants={fadeUp} transition={{ duration: 0.4 }}>
+          Your weekly debrief, where you already work.
+        </motion.h2>
+        <motion.p className="landing-section-sub" variants={fadeUp} transition={{ duration: 0.4 }}>
+          No dashboard to remember to open. Selldesk surfaces your menu analysis on WhatsApp — straight to your phone.
+        </motion.p>
+
+        <motion.div className="wa-mockup" variants={fadeUp} transition={{ duration: 0.5, delay: 0.1 }}>
+          <div className="wa-header">
+            <div className="wa-header-avatar">S</div>
+            <div>
+              <div className="wa-header-name">Selldesk</div>
+              <div className="wa-header-sub">Business account · weekly scan ready</div>
+            </div>
+          </div>
+          <div className="wa-body">
+            <div className="wa-bubble wa-bubble--in">
+              What&apos;s pulling my margins down this week?
+            </div>
+            <div className="wa-bubble wa-bubble--out">
+              <b>📊 Selldesk Weekly — 3 actions</b>
+              <br /><br />
+              1. 💸 <b>Raise Cappuccino → ₹130</b><br />
+              &nbsp; 42/wk at 62% margin — ₹10 bump adds ₹420/wk<br /><br />
+              2. 🤝 <b>Bundle Cold Brew + Croissant at ₹220</b><br />
+              &nbsp; Cold Brew sells 8/wk — pairing lifts both items<br /><br />
+              3. ❌ <b>Remove Mango Shake</b><br />
+              &nbsp; 3/wk, 10% margin — prep time better elsewhere
+              <br /><br />
+              <i>Reply DETAILS for the full breakdown ↗</i>
+            </div>
+            <div className="wa-time">Today, 9:14 AM · ✓✓</div>
+          </div>
         </motion.div>
       </motion.section>
 
@@ -219,9 +326,9 @@ export default function HomeScreen({ onDataReady }) {
           Start with our sample café data or drop in your own. No signup, no setup.
         </p>
         <div className="landing-hero-cta">
-          <button className="btn btn--primary btn--lg" onClick={handleManual}>
+          <MagneticButton className="btn btn--primary btn--lg" onClick={handleManual}>
             Analyse sample menu →
-          </button>
+          </MagneticButton>
           <button className="btn btn--ghost btn--lg" onClick={() => fileRef.current?.click()}>
             Upload my CSV
           </button>

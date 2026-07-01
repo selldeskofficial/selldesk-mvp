@@ -52,7 +52,7 @@ function mockRecommendations(rows, flags) {
 export async function getRecommendations(rows, flags, context = {}) {
   if (!API_KEY) {
     await new Promise(r => setTimeout(r, 900))
-    return mockRecommendations(rows, flags)
+    return { recs: mockRecommendations(rows, flags), source: 'rules' }
   }
 
   const tableText = rows
@@ -147,7 +147,7 @@ Respond with only valid JSON array — no markdown, no explanation.
     if (text) break
   }
 
-  if (!text) throw lastError ?? new Error('All models failed')
+  if (!text) return { recs: mockRecommendations(rows, flags), source: 'rules' }
 
   let parsed
   try {
@@ -158,7 +158,7 @@ Respond with only valid JSON array — no markdown, no explanation.
     else throw new Error('Could not parse recommendations from response')
   }
 
-  return filterRecommendations(parsed, rows, flags, context)
+  return { recs: filterRecommendations(parsed, rows, flags, context), source: 'ai' }
 }
 
 // Remove rec types that the data doesn't support, regardless of what the AI returned

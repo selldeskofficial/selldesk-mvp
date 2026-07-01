@@ -79,12 +79,9 @@ export default function App() {
       {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
 
       <footer className="app-footer">
-        <span className="app-footer-copy">© 2026 Selldesk. All rights reserved.</span>
-        <nav className="app-footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Contact</a>
-        </nav>
+        <span className="app-logo">Sell<span>desk</span></span>
+        <p className="app-footer-tagline">Revenue intelligence for independent cafés</p>
+        <span className="app-footer-copy">© 2026 Selldesk</span>
       </footer>
     </div>
   )
