@@ -14,7 +14,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 245, 215, 0.88);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -299,9 +299,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #8a4500;
-  background: rgba(254, 179, 0, 0.18);
-  border: 1px solid rgba(254, 179, 0, 0.4);
+  color: #7a5800;
+  background: rgba(254, 179, 0, 0.12);
+  border: 1px solid rgba(254, 179, 0, 0.35);
   padding: 5px 14px;
   border-radius: 100px;
   margin-bottom: 28px;
@@ -473,9 +473,9 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #7a5000;
-  background: rgba(254,179,0,0.18);
-  border: 1px solid rgba(254,179,0,0.4);
+  color: #7a5800;
+  background: rgba(254,179,0,0.12);
+  border: 1px solid rgba(254,179,0,0.35);
   display: inline-flex;
   padding: 3px 9px;
   border-radius: 100px;

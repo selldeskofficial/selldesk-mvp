@@ -14,23 +14,23 @@
   --pink-leaf:    #ffaaab;
 
   /* Surfaces */
-  --bg:           #fff5d7;
-  --surface:      #fffaeb;
-  --surface-2:    #ffefc0;
+  --bg:           #ffffff;
+  --surface:      #f9f9f9;
+  --surface-2:    #f0f0f0;
 
   /* Borders */
-  --border:       #f0d98a;
-  --border-hi:    #e8c960;
+  --border:       #e8e8e8;
+  --border-hi:    #d0d0d0;
 
   /* Accent = Blue */
   --accent:       #3b7eff;
   --accent-dim:   rgba(59, 126, 255, 0.1);
   --accent-glow:  rgba(59, 126, 255, 0.25);
 
-  /* Text — warm dark brown on beige */
-  --text:         #1c0f00;
-  --text-sub:     #6b4c2a;
-  --text-muted:   #b89060;
+  /* Text */
+  --text:         #111111;
+  --text-sub:     #555555;
+  --text-muted:   #999999;
 
   /* Semantic */
   --danger:       #ff5e6c;
@@ -54,7 +54,7 @@ html, body, #root { height: 100%; }
 
 body {
   background-color: var(--bg);
-  background-image: radial-gradient(circle, rgba(165, 120, 60, 0.22) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
   background-size: 24px 24px;
   color: var(--text);
   font-family: 'Inter', sans-serif;
