@@ -130,8 +130,12 @@ export default function HomeScreen({ onDataReady }) {
       setParsing(true)
       try {
         const result = await parseCSV(evt.target.result)
+        if (result.rejected) {
+          setParseError(result.rejectedReason || 'This dataset doesn\'t appear to be business-related. Selldesk works with product, sales, and pricing data.')
+          return
+        }
         if (result.rows.length === 0) {
-          setParseError('No valid rows found in this CSV. Make sure it has item names and prices.')
+          setParseError('Could not extract data from this CSV. Make sure it contains columns for item names and values (prices, totals, amounts, etc.).')
           return
         }
         onDataReady(result.rows, result.warning)
