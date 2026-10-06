@@ -111,7 +111,6 @@ Respond with only valid JSON array — no markdown, no explanation.
     'qwen/qwen3-coder:free',
   ]
 
-  let lastError = null
   let text = ''
 
   for (const model of FREE_MODELS) {
@@ -130,15 +129,14 @@ Respond with only valid JSON array — no markdown, no explanation.
           max_tokens: 1024,
         }),
       })
-    } catch (e) {
-      lastError = e
+    } catch {
       continue
     }
 
     if (!response.ok) {
       const err = await response.text()
       console.warn(`Model ${model} failed (${response.status}), trying next…`)
-      lastError = new Error(`OpenRouter error ${response.status}: ${err}`)
+      console.warn(`OpenRouter error ${response.status}: ${err}`)
       continue
     }
 

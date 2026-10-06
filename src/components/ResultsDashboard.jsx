@@ -74,7 +74,6 @@ function AnimatedNumber({ value }) {
 
   useEffect(() => {
     if (target === null || !ref.current) return
-    let start = 0
     const duration = 900
     const startTime = performance.now()
     const tick = (now) => {

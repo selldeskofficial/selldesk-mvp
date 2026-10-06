@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <rect width="180" height="180" rx="40" fill="#ffffff"/>
+  <text x="30" y="111" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="94" font-weight="800" letter-spacing="-11">S</text>
+  <text x="83" y="111" fill="#3B82F6" font-family="Inter, Arial, sans-serif" font-size="94" font-weight="800" letter-spacing="-11">D</text>
+  <path d="M37 139h106" stroke="#3B82F6" stroke-width="11" stroke-linecap="round"/>
+</svg>

@@ -128,7 +128,7 @@ function looksTextual(val) {
   // Reject if it's purely numeric
   if (!isNaN(parseFloat(trimmed.replace(/[₹$,\s]/g, '')))) return false
   // Accept if it contains letters
-  return /[a-zA-Z\u0900-\u097F\u0980-\u09FF]/.test(trimmed)
+  return /\p{L}/u.test(trimmed)
 }
 
 // ── Business-relevance validation ────────────────────────────────────
@@ -466,7 +466,7 @@ export async function parseCSV(text) {
   if (nonEmpty.length === 0) return { rows: [], warning: null }
 
   // Strip UTF-8 BOM if present
-  nonEmpty[0] = nonEmpty[0].replace(/^﻿/, '')
+  nonEmpty[0] = nonEmpty[0].replace(/^\uFEFF/, '')
 
   // Find the real header row (skip preamble metadata)
   const headerIdx = findHeaderRow(nonEmpty)
