@@ -33,7 +33,7 @@ export function SellDeskWordmark({
           fill={deskFill}
           fontFamily="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
           fontSize="32"
-          fontWeight="760"
+          fontWeight="770"
           letterSpacing="-1.15"
         >
           desk
