@@ -90,3 +90,4 @@ You can view all locally saved signups anytime in your browser DevTools Console 
 ```javascript
 getSellDeskSignups()
 ```
+

@@ -1276,6 +1276,7 @@
 
 .margin-badge {
   display: inline-flex;
+  
   align-items: center;
   padding: 3px 10px;
   border-radius: 100px;

@@ -78,3 +78,4 @@ export function getStoredSignups() {
 if (typeof window !== 'undefined') {
   window.getSellDeskSignups = getStoredSignups
 }
+
