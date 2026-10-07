@@ -1,17 +1,29 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { saveDemoSubmission } from '../utils/demoService'
 
 export default function DemoModal({ onClose }) {
   const [form, setForm] = useState({ name: '', email: '', company: '', message: '' })
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
   const [submitted, setSubmitted] = useState(false)
 
   function handleChange(e) {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setSubmitted(true)
+    setSubmitting(true)
+    setError(null)
+    try {
+      await saveDemoSubmission(form)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err?.message || 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -106,8 +118,19 @@ export default function DemoModal({ onClose }) {
                 />
               </div>
 
-              <button type="submit" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }}>
-                Submit Request
+              {error && (
+                <div style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 12 }}>
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="btn btn--primary"
+                disabled={submitting}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                {submitting ? 'Submitting…' : 'Submit Request'}
               </button>
             </form>
           )}
