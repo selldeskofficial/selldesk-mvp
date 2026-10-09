@@ -386,7 +386,7 @@ export default function HomeScreen({ onDataReady }) {
         <div className="about-grid">
           <motion.div className="about-story" variants={fadeUp}>
             <p>
-              In December 2025, our founders Aniruddh and Anuj had a simple idea: cafes create data every day, but most of it never becomes a decision. Owners know what sells, what slows down and what gets wasted, but they rarely have the time to sit with spreadsheets and turn that into action.
+              In December 2025, our founders Aniruddh, Anuj, Manmath, Mehebub had a simple idea: cafes create data every day, but most of it never becomes a decision. Owners know what sells, what slows down and what gets wasted, but they rarely have the time to sit with spreadsheets and turn that into action.
             </p>
             <p>
               In January 2026, SellDesk became a problem worth solving. We began speaking with cafes, studying menus, collecting real-world data in Pune and learning what actually happens behind the counter.
