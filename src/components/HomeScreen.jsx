@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { parseCSV } from '../utils/csvParser'
 import { SDMark, SellDeskWordmark } from './Brand'
 
+// SellDesk - Revenue intelligence for independent cafés
+
 function PremiumButton({ children, className, onClick, disabled, type = 'button' }) {
   const btnRef = useRef(null)
 
